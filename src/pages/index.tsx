@@ -1,11 +1,19 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import TransactionModal from "@/components/TransactionModal";
 import { useTransactions } from "@/hooks/useTransactions";
+import { useNavigate } from "react-router-dom";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { useCategories } from "@/hooks/useCategories";
 import Navbar from "@/components/NavBar";
 import FinanceCharts from "@/components/FinancesCharts";
-import TransactionModal from "@/components/TransactionModal";
-import { TransactionList } from "@/components/TransactionList";
 import { ExportButton } from "@/components/ExportButton";
+import { TransactionList } from "@/components/TransactionList";
 
 function formatPriceBRL(value: number) {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -14,8 +22,10 @@ function formatPriceBRL(value: number) {
 const Index = () => {
   const [showModal, setShowModal] = useState(false);
   const [user, setUser] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("Todas");
   const navigate = useNavigate();
   const { transactions, addTransaction, removeTransaction } = useTransactions();
+  const categories = useCategories();
 
   useEffect(() => {
     const savedName = localStorage.getItem("finance_user");
@@ -39,6 +49,12 @@ const Index = () => {
   }, {});
   const mainCategory =
     Object.entries(bigCategory).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "Nenhum";
+
+  // Filtragem por categoria
+  const filteredTransactions =
+    selectedCategory === "Todas"
+      ? transactions
+      : transactions.filter((t) => t.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-emerald-50 flex flex-col">
@@ -75,6 +91,7 @@ const Index = () => {
           </div>
         </div>
         <FinanceCharts transactions={transactions} />
+
         <div className="flex items-center justify-between mt-7 mb-3">
           <h2 className="text-xl font-bold">Gastos do Mês</h2>
           <div className="flex gap-3">
@@ -87,8 +104,26 @@ const Index = () => {
             </button>
           </div>
         </div>
+
+        {/* Filtro de categoria */}
+        <div className="mb-4 flex items-center gap-2">
+          <span className="text-sm text-gray-600">Filtrar por categoria:</span>
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <SelectTrigger className="w-48 bg-white">
+              <SelectValue placeholder="Todas" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Todas">Todas</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <TransactionList
-          transactions={transactions}
+          transactions={filteredTransactions}
           onRemove={removeTransaction}
         />
       </main>
