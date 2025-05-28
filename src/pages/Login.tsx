@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { User } from "lucide-react";
+import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { User } from "lucide-react";
 
 const Login = () => {
   const [name, setName] = useState("");

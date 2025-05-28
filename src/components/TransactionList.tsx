@@ -16,7 +16,10 @@ function formatDate(dateStr: string) {
   });
 }
 
-const TransactionList: React.FC<Props> = ({ transactions, onRemove }) => {
+export const TransactionList: React.FC<Props> = ({
+  transactions,
+  onRemove,
+}) => {
   if (transactions.length === 0) {
     return (
       <div className="w-full py-16 text-center text-gray-400">
@@ -59,5 +62,3 @@ const TransactionList: React.FC<Props> = ({ transactions, onRemove }) => {
     </div>
   );
 };
-
-export default TransactionList;

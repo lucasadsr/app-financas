@@ -21,7 +21,7 @@ function exportJSON(transactions: Transaction[]) {
   URL.revokeObjectURL(url);
 }
 
-const ExportButton: React.FC<Props> = ({ transactions }) => (
+export const ExportButton: React.FC<Props> = ({ transactions }) => (
   <Button
     variant="outline"
     onClick={() => exportJSON(transactions)}
@@ -32,5 +32,3 @@ const ExportButton: React.FC<Props> = ({ transactions }) => (
     Exportar Dados
   </Button>
 );
-
-export default ExportButton;

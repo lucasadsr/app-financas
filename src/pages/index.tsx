@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import TransactionModal from "@/components/TransactionModal";
-import TransactionList from "@/components/TransactionList";
-import { useTransactions } from "@/hooks/useTransactions";
 import { useNavigate } from "react-router-dom";
-
-import ExportButton from "@/components/ExportButton";
+import { useTransactions } from "@/hooks/useTransactions";
 import Navbar from "@/components/NavBar";
 import FinanceCharts from "@/components/FinancesCharts";
+import TransactionModal from "@/components/TransactionModal";
+import { TransactionList } from "@/components/TransactionList";
+import { ExportButton } from "@/components/ExportButton";
 
 function formatPriceBRL(value: number) {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
